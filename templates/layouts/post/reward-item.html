@@ -1,0 +1,10 @@
+<th:block th:fragment="item(imgSrc, name)">
+  <div class="qr-item">
+    <img th:src="@{${imgSrc}}" 
+         th:alt="${name}+'二维码'" 
+         loading="lazy" 
+         width="160" 
+         height="160">
+    <p th:text="${name}"></p>
+  </div>
+</th:block>

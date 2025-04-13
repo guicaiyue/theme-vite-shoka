@@ -1,0 +1,215 @@
+<th:block th:fragment="main(htmlTag)">
+  <meta name="pageTag" th:content="${htmlTag}">
+  <th:block th:switch="${htmlTag}">
+    <!-- 首页 -->
+    <th:block th:case="indexHtml">
+      <th:block th:replace="~{::index}" />
+    </th:block>
+    
+    <!-- 文章页 -->
+    <th:block th:case="postHtml">
+      <th:block th:replace="~{::post}" />
+    </th:block>
+    
+    <!-- 自定义页面 -->
+    <th:block th:case="pagePostHtml">
+      <th:block th:replace="~{::pagePost}" />
+    </th:block>
+    
+    <!-- 分类列表页 -->
+    <th:block th:case="categoriesHtml">
+      <th:block th:replace="~{::categories}" />
+    </th:block>
+    
+    <!-- 分类详情页 -->
+    <th:block th:case="categoryHtml">
+      <th:block th:replace="~{::category}" />
+    </th:block>
+    
+    <!-- 标签列表页 -->
+    <th:block th:case="tagsHtml">
+      <th:block th:replace="~{::tags}" />
+    </th:block>
+    
+    <!-- 标签详情页 -->
+    <th:block th:case="tagHtml">
+      <th:block th:replace="~{::tag}" />
+    </th:block>
+    
+    <!-- 作者页 -->
+    <th:block th:case="authorHtml">
+      <th:block th:replace="~{::author}" />
+    </th:block>
+    
+    <!-- 归档页 -->
+    <th:block th:case="archivesHtml">
+      <th:block th:replace="~{::archives}" />
+    </th:block>
+    
+    <!-- 默认通用页面 -->
+    <th:block th:case="*">
+      <th:block th:replace="~{::common}" />
+    </th:block>
+  </th:block>
+</th:block>
+
+<!-- Open Graph Meta Tags -->
+<th:block th:fragment="og-meta(title, description, type, url, image)">
+  <meta property="og:type" th:content="${type}">
+  <meta property="og:title" th:content="${title}">
+  <meta property="og:url" th:content="${url}">
+  <meta property="og:site_name" th:content="${site.title}">
+  <meta property="og:description" th:content="${description}">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:image" th:content="${image}">
+</th:block>
+
+<!-- Twitter Card Meta Tags -->
+<th:block th:fragment="twitter-meta(title, description, image)">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" th:content="${title}">
+  <meta name="twitter:description" th:content="${description}">
+  <meta name="twitter:image" th:content="${image}">
+</th:block>
+
+<!-- 文章页专用meta标签 -->
+<th:block th:fragment="post">
+  <th:block th:replace="~{::common(
+    ${post.spec.title + ' - ' + site.title},
+    ${#strings.isEmpty(post.status.excerpt) ? site.seo.description : post.status.excerpt},
+    'article',
+    ${siteUrl + post.status.permalink},
+    ${#strings.isEmpty(post.spec.cover) ? theme.config.seo.ogImage : post.spec.cover}
+  )}">
+  </th:block>
+  <meta property="article:published_time" th:content="${#temporals.format(post.spec.publishTime, 'yyyy-MM-dd')}">
+  <meta property="article:section" th:content="${post.categories[0].spec.displayName}" th:if="${not #lists.isEmpty(post.categories)}">
+  <meta property="article:tag" th:each="tag : ${post.tags}" th:content="${tag.spec.displayName}">
+</th:block>
+
+<!-- 自定义页面专用meta标签 -->
+<th:block th:fragment="pagePost">
+  <th:block th:replace="~{::common(
+    ${post.spec.title + ' - ' + site.title},
+    ${#strings.isEmpty(post.status.excerpt) ? site.seo.description : post.status.excerpt},
+    'website',
+    ${siteUrl + post.status.permalink},
+    ${#strings.isEmpty(post.spec.cover) ? theme.config.seo.ogImage : post.spec.cover}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 分类列表页专用meta标签 -->
+<th:block th:fragment="categories">
+  <th:block th:replace="~{::common(
+    '分类 - ' + site.title,
+    '浏览' + site.title + '的所有文章分类',
+    'website',
+    ${siteUrl + '/categories'},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 分类详情页专用meta标签 -->
+<th:block th:fragment="category">
+  <th:block th:replace="~{::common(
+    ${category.spec.displayName + ' - ' + site.title + '分类'},
+    ${#strings.isEmpty(category.spec.description) ? category.spec.displayName + '分类下的所有文章' : category.spec.description},
+    'website',
+    ${siteUrl + category.status.permalink},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 标签列表页专用meta标签 -->
+<th:block th:fragment="tags">
+  <th:block th:replace="~{::common(
+    '标签 - ' + site.title,
+    '浏览' + site.title + '的所有文章标签',
+    'website',
+    ${siteUrl + '/tags'},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 标签详情页专用meta标签 -->
+<th:block th:fragment="tag">
+  <th:block th:replace="~{::common(
+    ${tag.spec.displayName + ' - ' + site.title + '标签'},
+    ${#strings.isEmpty(tag.spec.description) ? tag.spec.displayName + '标签下的所有文章' : tag.spec.description},
+    'website',
+    ${siteUrl + tag.status.permalink},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 作者页专用meta标签 -->
+<th:block th:fragment="author">
+  <th:block th:replace="~{::common(
+    ${user.spec.displayName + ' - ' + site.title + '作者'},
+    ${#strings.isEmpty(user.spec.bio) ? user.spec.displayName + '的个人主页' : user.spec.bio},
+    'profile',
+    ${siteUrl + '/author/' + user.metadata.name},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 归档页专用meta标签 -->
+<th:block th:fragment="archives">
+  <th:block th:replace="~{::common(
+    '归档 - ' + site.title,
+    '浏览' + site.title + '的所有文章归档',
+    'website',
+    ${siteUrl + '/archives'},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 首页专用meta标签 -->
+<th:block th:fragment="index">
+  <th:block th:replace="~{::common(
+    site.title,
+    site.seo.description,
+    'website',
+    ${siteUrl},
+    ${theme.config.seo.ogImage}
+  )}">
+  </th:block>
+</th:block>
+
+<!-- 通用meta标签组件 -->
+<th:block th:fragment="common(title, description, type, url, image)">
+  <title th:text="${title}"></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFF">
+  <meta name="author" th:content="${site.title}">
+  <meta name="description" th:content="${description}">
+  
+  <!-- Open Graph Meta Tags -->
+  <th:block th:replace="~{::og-meta(
+    ${title},
+    ${description},
+    ${type},
+    ${url},
+    ${image}
+  )}">
+  </th:block>
+  
+  <!-- Twitter Card Meta Tags -->
+  <th:block th:replace="~{::twitter-meta(
+    ${title},
+    ${description},
+    ${image}
+  )}">
+  </th:block>
+  
+  <meta name="generator" content="Halo">
+  <link rel="canonical" th:href="${url}">
+</th:block>

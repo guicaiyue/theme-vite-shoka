@@ -1,0 +1,76 @@
+<!-- 通用列表处理组件 -->
+<th:block th:fragment="process(items, type)">
+  <!-- 文章列表处理 -->
+  <th:block th:if="${type == 'posts'}">
+    <!-- 置顶文章 -->
+    <th:block th:with="pinnedPosts = ${items.?[#this.spec.pinned]}">
+      <th:block th:if="${!#lists.isEmpty(pinnedPosts)}">
+        <h2 class="divider">置顶文章</h2>
+        <div class="segments sticky">
+          <th:block th:each="post : ${pinnedPosts}">
+            <th:block th:replace="~{layouts/macro/post-item :: item(${post})}"></th:block>
+          </th:block>
+        </div>
+      </th:block>
+    </th:block>
+
+    <!-- 普通文章 -->
+    <th:block th:with="normalPosts = ${items.?[!#this.spec.pinned]}">
+      <th:block th:if="${!#lists.isEmpty(normalPosts)}">
+        <h2 class="divider">文章列表</h2>
+        <div class="segments posts">
+          <th:block th:each="post : ${normalPosts}">
+            <th:block th:replace="~{layouts/macro/post-item :: item(${post})}"></th:block>
+          </th:block>
+        </div>
+      </th:block>
+    </th:block>
+  </th:block>
+
+  <!-- 分类列表处理 -->
+  <th:block th:if="${type == 'categories'}">
+    <div class="category-list">
+      <th:block th:each="category : ${items}">
+        <div class="category-item">
+          <a class="category-link" th:href="${category.status.permalink}">
+            <h3 class="category-name" th:text="${category.spec.displayName}"></h3>
+            <span class="category-count" th:text="${category.status.visiblePostCount + ' 篇文章'}"></span>
+          </a>
+          <div class="category-description" th:if="${!#strings.isEmpty(category.spec.description)}" 
+               th:text="${category.spec.description}"></div>
+        </div>
+      </th:block>
+    </div>
+  </th:block>
+
+  <!-- 标签列表处理 -->
+  <th:block th:if="${type == 'tags'}">
+    <div class="tag-cloud">
+      <th:block th:each="tag : ${items}">
+        <a th:href="${tag.status.permalink}" 
+           th:text="${tag.spec.displayName}"
+           th:data-count="${tag.status.visiblePostCount}"
+           class="tag"></a>
+      </th:block>
+    </div>
+  </th:block>
+
+  <!-- 归档列表处理 -->
+  <th:block th:if="${type == 'archives'}">
+    <div class="archive-list">
+      <th:block th:each="year : ${items}">
+        <div class="archive-year">
+          <h3 th:text="${year.year + '年'}"></h3>
+          <th:block th:each="month : ${year.months}">
+            <div class="archive-month">
+              <h4 th:text="${month.month + '月'}"></h4>
+              <th:block th:each="post : ${month.posts}">
+                <th:block th:replace="~{layouts/macro/archive-post-item :: item(${post})}"></th:block>
+              </th:block>
+            </div>
+          </th:block>
+        </div>
+      </th:block>
+    </div>
+  </th:block>
+</th:block> 

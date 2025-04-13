@@ -1,0 +1,22 @@
+<!-- 文章统计信息组件 - 显示文章字数和预计阅读时间 -->
+<th:block th:fragment="stats(post, length, readingSpeed)">
+  <span class="item" title="本文字数">
+    <span class="icon">
+      <i class="ic i-pen"></i>
+    </span>
+    <span class="text">本文字数</span>
+    <span th:text="${length}"></span>
+    <span class="text">字</span>
+  </span>
+  <br/>
+  <span class="item" title="预计阅读时间">
+    <span class="icon">
+      <i class="ic i-clock"></i>
+    </span>
+    <span class="text">预计阅读时间</span>
+    <!-- 阅读时间计算 -->
+    <span th:with="readingTime=${#numbers.formatDecimal(length / readingSpeed, 0, 0)}"
+          th:text="${readingTime + ' 分钟'}">
+    </span>
+  </span>
+</th:block>

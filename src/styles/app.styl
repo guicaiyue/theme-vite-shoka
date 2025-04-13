@@ -1,0 +1,35 @@
+// Stylus imports
+@import "stylus/_variables";
+@import "stylus/_mixins";
+@import "stylus/_colors";
+@import "stylus/_iconfont";
+@import "stylus/comment";
+
+// Scaffolding
+@import "stylus/_common/scaffolding";
+
+// Layout
+@import "stylus/_common/outline";
+
+// Components
+@import "stylus/_common/components";
+
+// Fancybox styles
+@media all and (min-width: 800px)
+  .fancybox-thumbs
+    top auto
+    width auto
+    bottom 0
+    left 0
+    right 0
+    height 95px
+    padding 10px 10px 5px 10px
+    box-sizing border-box
+    background rgba(0, 0, 0, 0.3)
+    
+    .fancybox-thumbs__list
+      margin auto
+  
+  .fancybox-show-thumbs .fancybox-inner
+    right 0
+    bottom 95px

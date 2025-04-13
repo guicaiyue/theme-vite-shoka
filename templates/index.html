@@ -1,34 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content})}">
-  <th:block th:fragment="content">
-    <div class="mx-auto flex h-screen w-96 flex-col items-center justify-center">
-      <ul class="w-full list-inside list-disc">
-        <li th:each="post : ${posts.items}">
-          <span class="icon-[tabler--box]"></span>
-          <a
-            th:text="${post.spec.title}"
-            th:href="${post.status.permalink}"
-            class="hover:text-gray-600 hover:underline"
-          ></a>
-        </li>
-      </ul>
-      <div class="mt-6 flex w-full items-center justify-between" th:if="${posts.hasPrevious() || posts.hasNext()}">
-        <a
-          th:href="@{${posts.prevUrl}}"
-          class="whitespace-no-wrap group inline-flex items-center justify-center gap-1 rounded-md border border-gray-200 bg-white px-4 py-1 text-sm font-medium leading-6 text-gray-600 shadow-sm hover:bg-gray-50 focus:shadow-none focus:outline-none"
-        >
-          <span class="i-tabler-arrow-left text-lg transition-all group-hover:-translate-x-1"></span>
-          <span>上一页</span>
-        </a>
-        <span class="text-sm text-gray-900" th:text="${posts.page} +' / '+ ${posts.totalPages}"></span>
-        <a
-          th:href="@{${posts.nextUrl}}"
-          class="whitespace-no-wrap group inline-flex items-center justify-center gap-1 rounded-md border border-gray-200 bg-white px-4 py-1 text-sm font-medium leading-6 text-gray-600 shadow-sm hover:bg-gray-50 focus:shadow-none focus:outline-none"
-        >
-          <span>下一页</span>
-          <span class="i-tabler-arrow-right text-lg transition-all group-hover:translate-x-1"></span>
-        </a>
-      </div>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'indexHtml')}">
+  <div class="pjax" id="brandSlot">
+    <a href="/" class="logo" rel="start">
+      <p class="artboard" th:text="${site.title}"></p>
+      <h1
+        itemprop="name headline"
+        class="title"
+        th:text="${theme.config.base.blog_master}"
+      >
+      </h1>
+    </a>
+    <p class="meta" itemprop="description" th:text="${theme.config.base.blog_description}"></p>
+  </div>
+  <!--  可被替换的 {% block content %} -->
+  <div id="main" class="pjax">
+    <div class="index wrap">
+      <th:block th:with="dataList=${posts.items.?[#this.spec.pinned]}">
+        <th:block th:if="${!#lists.isEmpty(dataList)}">
+          <h2 class="divider">置顶文章</h2>
+          <div class="segments sticky">
+            <div th:replace="~{layouts/macro/segment :: article}"></div>
+          </div>
+        </th:block>
+      </th:block>
+      <th:block
+        th:with="categories = ${categoryFinder.listAll()},dataList=${posts.items.?[#this.spec.pinned]}">
+        <th:block th:if="${!#lists.isEmpty(categories) && !#lists.isEmpty(dataList)}">
+          <h2 class="divider">精选分类</h2>
+          <div class="cards">
+            <div th:replace="~{layouts/macro/card :: card}"></div>
+          </div>
+        </th:block>
+      
+      </th:block>
+      <th:block th:with="dataList=${posts.items.?[!#this.spec.pinned]}">
+        <th:block th:if="${!#lists.isEmpty(dataList)}">
+          <h2 class="divider">文章列表</h2>
+          <div class="segments posts">
+            <div th:replace="~{layouts/macro/segment :: article}"></div>
+          </div>
+        </th:block>
+      </th:block>
     </div>
-  </th:block>
+    <div th:replace="~{layouts/common/pagination :: pagination}"></div>
+  </div>
 </html>

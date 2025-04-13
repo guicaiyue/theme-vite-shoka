@@ -1,0 +1,52 @@
+<!-- 通用数据处理组件 -->
+<th:block th:fragment="process(data, type)">
+  <!-- 文章数据处理 -->
+  <th:block th:if="${type == 'post'}" th:with="processedData = ${
+    {
+      'title': data.spec.title,
+      'author': data.owner.displayName,
+      'date': #dates.format(data.spec.publishTime, 'yyyy-MM-dd'),
+      'category': !#lists.isEmpty(data.categories) ? data.categories[0] : null,
+      'excerpt': data.status.excerpt,
+      'cover': data.spec.cover,
+      'permalink': data.status.permalink,
+      'stats': data.stats
+    }
+  }">
+    <th:block th:replace="${layout}(${processedData})"></th:block>
+  </th:block>
+
+  <!-- 分类数据处理 -->
+  <th:block th:if="${type == 'category'}" th:with="processedData = ${
+    {
+      'name': data.spec.displayName,
+      'description': data.spec.description,
+      'permalink': data.status.permalink,
+      'postCount': data.status.visiblePostCount
+    }
+  }">
+    <th:block th:replace="${layout}(${processedData})"></th:block>
+  </th:block>
+
+  <!-- 标签数据处理 -->
+  <th:block th:if="${type == 'tag'}" th:with="processedData = ${
+    {
+      'name': data.spec.displayName,
+      'permalink': data.status.permalink,
+      'postCount': data.status.visiblePostCount
+    }
+  }">
+    <th:block th:replace="${layout}(${processedData})"></th:block>
+  </th:block>
+
+  <!-- 归档数据处理 -->
+  <th:block th:if="${type == 'archive'}" th:with="processedData = ${
+    {
+      'year': data.year,
+      'months': data.months,
+      'postCount': #lists.size(data.posts)
+    }
+  }">
+    <th:block th:replace="${layout}(${processedData})"></th:block>
+  </th:block>
+</th:block> 

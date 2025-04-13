@@ -1,0 +1,44 @@
+<!-- 分类卡片组件 - 用于首页显示精选分类及其最新文章 -->
+<th:block th:each="categorie,iterStat : ${categories}" th:fragment="card">
+  <th:block th:if="${(iterStat.size-iterStat.index)<=3}">
+    <section class="item show">
+      <div
+        class="cover"
+        decoding="async"
+        th:data-background-image="${categorie.spec.cover}">
+        <h2 class="title" th:text="${categorie.spec.displayName}"></h2>
+      </div>
+      <div class="info">
+        <div class="ribbon">
+          <a
+            th:href="${categorie.status.permalink}"
+            th:text="${categorie.spec.displayName}"></a>
+        </div>
+        <div class="inner">
+          <ul
+            class="posts"
+            th:with="posts = ${postFinder.listByCategory(1,6,categorie.metadata.name)}"
+          >
+            <li th:each="post : ${posts.items}">
+              <a
+                th:text="${post.spec.title}"
+                th:title="${post.spec.title}"
+                th:href="${post.status.permalink}"></a>
+            </li>
+          </ul>
+          <div class="meta footer">
+            <span>
+              <i class="ic i-file"></i><th:block
+                th:text="${categorie.status.visiblePostCount}"></th:block> 篇文章
+            </span>
+          </div>
+          <a
+            class="btn"
+            th:href="${categorie.status.permalink}"
+            th:title="${categorie.spec.displayName}">more..</a
+          >
+        </div>
+      </div>
+    </section>
+  </th:block>
+</th:block>

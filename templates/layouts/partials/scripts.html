@@ -1,0 +1,23 @@
+<th:block th:fragment="scripts">
+    <!-- 脚本引用组件 - 引入网站所需的JavaScript文件 -->
+    <!-- 基础库 -->
+
+    <!-- 核心功能库 - 使用CDN但添加本地回退 -->
+    <!-- <script defer th:src="@{https://gcore.jsdelivr.net/combine/npm/pace-js@1.0.2/pace.min.js,npm/pjax@0.2.8/pjax.min.js,npm/whatwg-fetch@3.4.0/dist/fetch.umd.min.js,npm/animejs@3.2.0/lib/anime.min.js}" onerror="this.onerror=null;this.src=@{/assets/js/core.min.js};"></script> -->
+
+    <!-- 搜索相关库 - 仅在需要时加载 -->
+    <!-- <script defer th:if="${pluginFinder.available('PluginSearchWidget')}" th:src="@{https://gcore.jsdelivr.net/combine/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js,npm/instantsearch.js@4/dist/instantsearch.production.min.js}" onerror="this.onerror=null;this.src=@{/assets/js/search.min.js};"></script> -->
+
+    <!-- 性能优化库 -->
+    <!-- <script defer th:src="@{https://gcore.jsdelivr.net/combine/npm/lozad@1/dist/lozad.min.js,npm/quicklink@2/dist/quicklink.umd.js}" onerror="this.onerror=null;this.src=@{/assets/js/optimize.min.js};"></script> -->
+
+    <!-- 主题脚本 - 使用Vite优化的ESM模块 -->
+    <script type="module" th:src="@{/assets/dist/main-{version}.js(version=${theme.spec.version})}"></script>
+
+    <!-- 评论插件 - 本地托管 -->
+    <script defer th:if="${pluginFinder.available('PluginCommentWidget')}" th:src="@{/plugins/PluginCommentWidget/assets/static/comment-widget.iife.js}"></script>
+
+    <!-- 统计分析 -->
+    <div th:replace="~{layouts/third-party/analytics :: analytics}"></div>
+        
+</th:block>

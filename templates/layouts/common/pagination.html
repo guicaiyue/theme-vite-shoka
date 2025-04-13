@@ -1,0 +1,37 @@
+<!-- 分页导航组件 - 用于文章列表、归档等页面的分页显示 -->
+<nav class="pagination" th:fragment="pagination">
+  <div class="inner">
+    <a
+      class="extend prev"
+      rel="prev"
+      th:href="${posts.prevUrl}"
+      th:class="${posts.hasPrevious() ? '': 'hidden'}"
+      ><i class="ic i-angle-left" aria-label="上一页"></i></a
+    >
+    <th:block
+      class="pagination-list is-hidden-mobile"
+      th:with="p=${T(java.lang.Math).ceil(T(java.lang.Double).parseDouble(posts.page) / 5.0) },start = ${(p * 5) - 5  +1 }, end=${p * 5}"
+    >
+      <th:block
+        th:each="index : ${#numbers.sequence(start, (posts.totalPages > 5) ? end : posts.totalPages)}"
+      >
+        <a
+          class="page-number"
+          th:if="${index != posts.page}"
+          th:href="@{'/page/'+ ${index}}"
+          th:text="${index}"
+        >
+        </a>
+        <span
+          class="page-number current"
+          th:if="${index == posts.page}"
+          th:text="${index}"></span>
+      </th:block>
+    </th:block>
+    <a
+      th:href="${posts.nextUrl}"
+      th:class="'page-number' + ${posts.hasNext()?'':'disabled'}"
+      ><i class="ic i-angle-right" aria-label="下一页"></i></a
+    >
+  </div>
+</nav>

@@ -1,0 +1,79 @@
+.author-page {
+  padding: 2rem;
+  background-color: var(--card-background-color);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+    
+    .author-avatar {
+      margin-bottom: 1rem;
+      
+      img {
+        border-radius: 50%;
+        border: 4px solid var(--primary-color);
+        transition: transform 0.3s ease;
+        
+        &:hover {
+          transform: rotate(6deg) scale(1.05);
+        }
+      }
+    }
+    
+    .author-name {
+      font-size: 1.5rem;
+      margin: 0.5rem 0;
+      color: var(--text-color);
+    }
+    
+    .author-description {
+      text-align: center;
+      color: var(--text-color-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .author-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      
+      a {
+        color: var(--text-color-secondary);
+        font-size: 1.2rem;
+        
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+  }
+  
+  .body.md {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px dashed var(--border-color);
+  }
+  
+  .comment-container {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px dashed var(--border-color);
+    
+    .comment-title {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-color);
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .author-page {
+    padding: 1rem;
+  }
+}

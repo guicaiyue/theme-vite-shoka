@@ -1,0 +1,20 @@
+<!-- 页面头部组件 - 包含网站的元数据、样式和脚本引用 -->
+<th:block th:fragment="head(htmlTag,seoSlot,headSlot)">
+  <!-- 基本 meta 标签 -->
+  <th:block th:replace="~{layouts/head/meta :: main(${htmlTag})}"></th:block>
+  
+  <!-- Favicon -->
+  <th:block th:replace="~{layouts/head/favicon :: favicon}"></th:block>
+  
+  <!-- 样式资源 -->
+  <th:block th:replace="~{layouts/head/styles :: styles}"></th:block>
+  
+  <!-- SEO -->
+  <th:block th:replace="${seoSlot}"></th:block>
+  
+  <!-- JavaScript 配置 -->
+  <th:block th:replace="~{layouts/head/scripts :: scripts}"></th:block>
+  
+  <!-- 额外的头部内容 -->
+  <th:block th:replace="${headSlot}"></th:block>
+</th:block>

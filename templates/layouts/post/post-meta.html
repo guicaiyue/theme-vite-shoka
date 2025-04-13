@@ -1,0 +1,27 @@
+<!-- 文章元数据组件 - 显示文章的分类、标签和其他元信息 -->
+<th:block th:fragment="meta(post)">
+  <div class="meta" th:with="length=${#strings.length(post.content.raw)}, readingSpeed=${theme.config.post.readingSpeed ?: 600}">
+    <!-- 时间信息 -->
+    <span class="item" th:title="${#dates.format(post.status.lastModifyTime, 'yyyy-MM-dd HH:mm:ss')}">
+      <span class="icon">
+        <i class="ic i-calendar-check"></i>
+      </span>
+      <span class="text">更新于</span>
+      <time itemprop="dateModified" th:datetime="${post.status.lastModifyTime}" th:text="${#dates.format(post.status.lastModifyTime, 'yyyy-MM-dd')}"></time>
+    </span>
+    <!-- 阅读次数 -->
+    <span class="item">
+      <span class="icon">
+        <i class="ic i-eye"></i>
+      </span>
+      <span class="text">阅读次数</span>
+      <span class="leancloud-visitors-count" th:text="${post.stats.visit}"></span>
+      <span class="text">次</span>
+    </span>
+  </div>
+</th:block>
+
+<!-- 文章标题和完整元数据 (用于文章页面顶部) -->
+<th:block th:fragment="full(post)">
+  <h1 itemprop="name headline" th:text="${post.spec.title}"></h1>
+</th:block>

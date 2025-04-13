@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'categoriesHtml')}">
+  <div class="pjax" id="brandSlot">
+    <th:block th:replace="~{layouts/macro/page-title :: title('分类', '')}"></th:block>
+  </div>
+  <div id="main" class="pjax">
+    <div class="collapse wrap">
+      <th:block th:replace="~{layouts/macro/breadcrumb :: path('分类', '', ${#lists.size(categories)})}"></th:block>
+      
+      <div class="tag cloud">
+        <a 
+          th:each="category : ${categories}" 
+          th:text="${category.spec.displayName}" 
+          th:href="${category.status.permalink}"
+          th:title="${'包含 ' + category.status.visiblePostCount + ' 篇文章'}"
+          th:data-count="${category.status.visiblePostCount}"
+          class="category">
+        </a>
+      </div>
+      
+      <!-- 分类列表 -->
+      <div class="category-list" th:if="${!#lists.isEmpty(categories)}">
+        <div class="category-group" th:each="category : ${categories}">
+          <div class="category-item">
+            <a class="category-link" th:href="${category.status.permalink}">
+              <h3 class="category-name" th:text="${category.spec.displayName}"></h3>
+              <span class="category-count" th:text="${category.status.visiblePostCount + ' 篇文章'}"></span>
+            </a>
+            <div class="category-description" th:if="${!#strings.isEmpty(category.spec.description)}" th:text="${category.spec.description}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</html> 

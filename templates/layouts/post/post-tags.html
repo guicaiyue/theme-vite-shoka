@@ -1,0 +1,11 @@
+<!-- 文章标签组件 - 显示文章的标签列表 -->
+<th:block th:fragment="tags(post)">
+  <th:block th:if="${!#lists.isEmpty(post.tags)}">
+    <div class="tags">
+      <a th:each="tag : ${post.tags}" th:href="${tag.status.permalink}" rel="tag">
+        <i class="ic i-tag"></i>
+        <th:block th:text="${tag.spec.displayName}"></th:block>
+      </a>
+    </div>
+  </th:block>
+</th:block>

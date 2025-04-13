@@ -1,0 +1,48 @@
+<!-- 侧边栏组件 - 显示网站侧边栏内容 -->
+<div class="inner" th:fragment="sidebar">
+  <div class="panels">
+    <div class="inner">
+      <div class="contents panel pjax" data-title="文章目录"></div>
+      <div class="related panel pjax" data-title="系列文章">
+        <ul th:if="${post}">
+          <th:block th:each="entry,index : ${post.metadata.annotations}">
+            <th:block th:if="${#strings.startsWith(entry.key, 'shoka.post/series-mark')}">
+                <th:block th:each="postChild : ${postFinder.listAll()}">
+                  <li class="active"
+                  th:if="${postChild.metadata.annotations[entry.key]}"
+                  th:data-index="${postChild.metadata.annotations[entry.key]}"
+                  >
+                    <a th:href="${postChild.status.permalink}" rel="bookmark" th:title="${postChild.spec.title}" data-pjax-state="" th:text="${postChild.spec.title}"></a>
+                  </li>
+                </th:block>
+              <th:block th:break></th:block>
+            </th:block>
+            <th:block th:if="${index.count==index.size && !#strings.startsWith(entry.key, 'shoka.post/series-mark')}">
+              <!-- 直到最有一个都没有这个属性就说明这篇文章没有系列 -->
+              <li class="active"><a th:href="${post.status.permalink}" rel="bookmark" th:title="${post.spec.title}" data-pjax-state="" th:text="${post.spec.title}"></a></li>
+            </th:block>
+          </th:block>
+        </ul>
+      </div>
+      <div class="overview panel active" data-title="站点概览">
+        <div th:replace="~{layouts/sidebar/overview :: overview}"></div>
+      </div>
+    </div>
+  </div>
+
+  <ul id="quick" th:with="postCursor = ${post == null ? '':postFinder.cursor(post.metadata.name)}">
+    <li class="prev pjax">
+      <a th:if="${postCursor!='' && postCursor.hasPrevious()}" rel="prev" title="上一篇" th:href="@{${postCursor.previous.status.permalink}}">
+        <i class="ic i-chevron-left"></i>
+      </a>
+    </li>
+    <li class="up"><i class="ic i-arrow-up"></i></li>
+    <li class="down"><i class="ic i-arrow-down"></i></li>
+    <li class="next pjax">
+      <a th:if="${postCursor!='' && postCursor.hasNext()}" rel="next" title="下一篇" th:href="@{${postCursor.next.status.permalink}}">
+        <i class="ic i-chevron-right"></i>
+      </a>
+    </li>
+    <li class="percent" style="width: 41%;"></li>
+  </ul>
+</div>

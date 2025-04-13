@@ -1,0 +1,39 @@
+<!-- 文章内容组件 - 显示文章的主体内容、元数据和相关功能 -->
+
+<article th:fragment="postArticle" itemscope itemtype="http://schema.org/Article" class="post block line-numbers" th:attr="lang=${'zh-CN'}">
+  <link itemprop="mainEntityOfPage">
+
+  <!-- SEO 相关元数据 -->
+  <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="image" th:content="${theme.config.base.blog_master_head_image}">
+    <meta itemprop="name" th:content="${post.owner.displayName}">
+    <meta itemprop="description" th:content="${theme.config.base.blog_description}">
+  </span>
+
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" th:content="${site.title}">
+  </span>
+  
+  <!-- 文章内容 -->
+  <div class="body md" itemprop="articleBody">
+    <th:block th:utext="${post.content.content}"></th:block>
+    
+    <!-- 文章标签 -->
+    <th:block th:replace="~{layouts/post/post-tags :: tags(${post})}"></th:block>
+    
+    <!-- 打赏功能 -->
+    <th:block th:replace="~{layouts/post/reward :: postReward}"></th:block>
+  </div>
+
+  <!-- 文章页脚 -->
+  <footer>
+    <!-- 文章元数据 -->
+    <th:block th:replace="~{layouts/post/post-meta :: meta(${post})}"></th:block>
+
+    <!-- 点赞功能 -->
+    <th:block th:replace="~{layouts/post/post-like :: like(${post})}"></th:block>
+
+    <!-- 版权信息 -->
+    <th:block th:replace="~{layouts/post/post-copyright :: copyright(${post}, ${site.url})}"></th:block>
+  </footer>
+</article>

@@ -1,0 +1,30 @@
+<!-- 打赏组件 - 提供文章打赏功能 -->
+<th:black th:fragment="postReward">
+  <div class="reward" th:if="${theme.config.post.enable_reward && !#lists.isEmpty(theme.config.post.reward_methods)}">
+    <button type="button" aria-label="打赏">
+      <i class="ic i-heartbeat"></i> 打赏
+    </button>
+    <p>请我喝杯咖啡吧 ヾ(^▽^*)))</p>
+    
+    <div id="qr">
+      <div th:each="method : ${theme.config.post.reward_methods}" class="reward-item">
+        <div th:if="${method.type != 'paypal'}" class="reward-qr">
+          <img 
+            th:src="${method.qrcode}" 
+            th:alt="${method.type == 'wechat' ? '微信支付' : '支付宝'}"
+            loading="lazy"
+          />
+          <span class="reward-type" th:text="${method.type == 'wechat' ? '微信支付' : '支付宝'}"></span>
+        </div>
+        <a th:if="${method.type == 'paypal'}" 
+           th:href="${method.paypal_link}"
+           class="reward-paypal"
+           target="_blank"
+           rel="noopener noreferrer">
+          <img src="/assets/images/paypal.svg" alt="PayPal" loading="lazy" />
+          <span class="reward-type">PayPal</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</th:black>

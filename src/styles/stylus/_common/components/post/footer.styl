@@ -1,0 +1,152 @@
+.post footer {
+  &::before {
+    content: "";
+    width: 100%;
+    height: .0625rem;
+    background: var(--grey-3);
+    display: block;
+    margin: 1.25rem auto 0rem;
+  }
+
+}
+
+.post #post-footer-util {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1rem
+
+ .box {
+    border: 0.1rem solid transparent;
+    border-left: 0.1rem solid var(--color-grey);
+    border-right: 0.1rem solid var(--color-grey);
+    border-top: 0.1rem solid var(--color-grey);
+    border-bottom: 0.1rem solid var(--color-grey);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .u-like {
+    width: 3.625rem;
+    height: 3.625rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @keyframes bgBlue {
+      0% {  
+        background-color: transparent; /* 动画开始时背景色为透明 */ 
+        border: 0rem; 
+      }  
+      100% {  
+        background-color: var(--color-blue-two); /* 动画结束时背景色为蓝色 */
+        border: 0.1rem solid var(--color-blue-two);
+      }  
+    } 
+    &:hover {
+      /* 应用动画，时长为1.5秒，缓动函数为ease-in-out，动画结束后保持结束状态 */  
+      animation: bgBlue 1s ease-in-out forwards; 
+
+      /* 鼠标碰到后大手指的动画关闭 */
+      svg {
+        animation: none;
+      }
+
+      span{
+        color:#FFFFFF;
+      }
+
+      /* 鼠标碰到颜色变成白色 */
+      path{
+        fill:#FFFFFF;
+        stroke:#FFFFFF;
+      }
+    }
+
+    svg {
+      width: 80%;
+      height: 80%;
+      margin-top: -0.4rem
+      transform-origin: 50% 50%;
+    }
+
+    span{
+      position: absolute;
+      font-size: 0.8rem;
+      margin-top: 2.0rem;
+      color: #5F5F5F;
+      pointer-events: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      /* -webkit-user-select: none; */
+      user-select: none;
+    }
+
+    path{
+      fill:none;
+      stroke:#5F5F5F;
+      stroke-width:80;
+    }
+    .light > path {
+      stroke-width:50;
+      stroke-miterlimit:10;
+      stroke-dasharray: 600;
+      stroke-dashoffset: 1200;
+      /* animation: dash 3s linear infinite; */
+      animation: light 1s linear infinite;
+      animation-fill-mode: forwards;
+      /* 填充的透明度 */
+      fill-opacity: 0;
+      /* 描边画笔是圆头 */
+      stroke-linecap: 'round';
+      /* 描边画笔拐角是圆头 */
+      stroke-linejoin: 'round';
+      opacity: 1;
+    }
+
+    @keyframes light {
+      /* 这个动画适合有色logo，突出行为 */
+      0% {
+        opacity: 0;
+        stroke-dashoffset: 1200;
+      }
+      59% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      99% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+
+  .u-like-click{
+    animation: none;
+    background-color: var(--color-blue-two);
+    &:hover {
+      animation: none;
+    }
+    svg {
+      animation: none;
+    }
+
+    span{
+      color:#FFFFFF;
+    }
+
+    path{
+      fill:#FFFFFF;
+      stroke:#FFFFFF;
+    }
+
+    .light > path{
+      animation: none;
+      opacity: 0;
+    }
+  }
+}

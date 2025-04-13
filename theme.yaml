@@ -1,21 +1,24 @@
 apiVersion: theme.halo.run/v1alpha1
 kind: Theme
 metadata:
-  name: theme-modern-starter
+  name: theme-vite-shoka
 spec:
-  displayName: Modern Starter
+  customTemplates:
+    # 为独立页面支持自定义模板
+    page:
+      - name: 文章模板
+        description: md使用文章的方式展示
+        screenshot:
+        file: pagePost.html
+  displayName: shoka
   author:
-    name: Halo
-    website: https://github.com/halo-dev
-  description: A development starter theme with Vite Ecosystem for Halo
-  logo: https://www.halo.run/logo
-  homepage: https://github.com/halo-dev/theme-modern-starter#readme
-  repo: https://github.com/halo-dev/theme-modern-starter
-  issues: https://github.com/halo-dev/theme-modern-starter/issues
-  settingName: "theme-modern-starter-setting"
-  configMapName: "theme-modern-starter-configMap"
-  version: "1.0.0"
-  requires: "2.0.0"
-  license:
-    - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/theme-modern-starter/blob/main/LICENSE"
+    name: 昔日织
+    website: https://xirizhi.cn
+  description: 一个小众的主题
+  logo: https://gcore.jsdelivr.net/gh/guicaiyue/FigureBed@master/MImg/20230504125718.jpg
+  website: https://github.com/guicaiyue/theme-shoka
+  repo: https://github.com/guicaiyue/theme-shoka
+  settingName: "theme-shoka-setting"
+  configMapName: "theme-shoka-configMap"
+  version: 1.0.5
+  require: 2.0.0

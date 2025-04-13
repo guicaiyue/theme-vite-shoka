@@ -1,0 +1,16 @@
+<!-- 归档页面的文章项组件 - 用于在归档、分类和标签页面中显示文章列表项 -->
+<th:block th:fragment="item(post)">
+  <article class="item normal" itemtype="http://schema.org/Article">
+    <div class="meta">
+      <time itemprop="dateCreated" th:datetime="${post.spec.publishTime}" th:text="${#dates.format(post.spec.publishTime, 'MM-dd')}"></time>
+      <span th:if="${!#lists.isEmpty(post.categories)}">
+        <a th:href="${post.categories[0].status.permalink}" th:text="${post.categories[0].spec.displayName}"></a>
+      </span>
+    </div>
+    <div class="title">
+      <a th:href="${post.status.permalink}" itemprop="url">
+        <span itemprop="name" th:text="${post.spec.title}"></span>
+      </a>
+    </div>
+  </article>
+</th:block>

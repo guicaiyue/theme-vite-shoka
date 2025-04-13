@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'authorHtml')}">
+  <div class="pjax" id="brandSlot">
+    <h1 itemprop="name headline" th:text="${'关于 ' + author.spec.displayName}"></h1>
+  </div>
+  <div id="main" class="pjax">
+    <div class="author-page">
+      <!-- 作者信息 -->
+      <th:block th:replace="~{layouts/macro/author-info :: info(${author})}"></th:block>
+      
+      <!-- 作者内容 -->
+      <div class="body md" itemprop="articleBody" th:if="${!#strings.isEmpty(author.content.content)}">
+        <th:block th:utext="${author.content.content}"></th:block>
+      </div>
+      
+      <!-- 评论区 -->
+      <div class="comment-container" th:if="${haloCommentEnabled}">
+        <h2 class="comment-title">留言板</h2>
+        <div class="halo-shoka-comment">
+          <halo:comment
+              group="content.halo.run"
+              th:kind="${'authors/'+author.metadata.name}"
+              th:attr="name=${author.metadata.name}"
+              colorScheme="window.main.currentColorScheme"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

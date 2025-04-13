@@ -1,0 +1,8 @@
+<!-- 通用面包屑导航组件 - 用于显示当前页面在网站层次结构中的位置 -->
+<nav class="breadcrumb">
+  <ul>
+    <li><a href="/">首页</a></li>
+    <li th:if="${!#strings.isEmpty(breadcrumb.title)}" th:text="${breadcrumb.title}"></li>
+    <li th:if="${!#strings.isEmpty(breadcrumb.subtitle)}" th:text="${breadcrumb.subtitle}"></li>
+  </ul>
+</nav>

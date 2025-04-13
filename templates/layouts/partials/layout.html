@@ -1,0 +1,78 @@
+<!-- 主布局组件 - 定义整个网站的基本结构和布局 -->
+<!DOCTYPE html>
+<html th:fragment="layout (brandSlot, content,htmlTag)">
+  <head>
+    <!-- 123213 -->
+    <!-- 不要head标签，只要里面 -->
+    <th:block th:replace="~{layouts/head/head :: head(${htmlTag},~{},~{})}"></th:block>
+  </head>
+  <body>
+    <div id="loading">
+      <div class="cat">
+        <div class="body"></div>
+        <div class="head">
+          <div class="face"></div>
+        </div>
+        <div class="foot">
+          <div class="tummy-end"></div>
+          <div class="bottom"></div>
+          <div class="legs left"></div>
+          <div class="legs right"></div>
+        </div>
+        <div class="paw">
+          <div class="hands left"></div>
+          <div class="hands right"></div>
+        </div>
+      </div>
+    </div>
+    <div id="container">
+      <header id="header">
+        <div class="inner">
+          <div id="brand">
+            <th:block th:replace="${brandSlot}"></th:block>
+          </div>
+          <div th:replace="~{layouts/partials/header :: #nav}"></div>
+        </div>
+        <div id="imgs">
+          <!-- 安装了图库管理插件 -->
+          <ul>
+            <li style="display:none">
+              <th:block th:if="${pluginFinder.available('PluginPhotos')}" th:each="group : ${photoFinder.groupBy()}">
+                <th:block th:if="${group.spec.displayName eq '头部轮播图'}"
+                  th:each="photo : ${group.photos}"
+                  th:text="${photo.spec.url+';'}"
+                ></th:block>
+              </th:block>
+            </li>
+          </ul>
+        </div>
+      </header>
+      
+      <!-- 波浪动画组件 -->
+      <div th:replace="~{layouts/common/waves :: #waves}"></div>
+      
+      <main>
+        <div class="inner">
+          <!-- 使用 Thymeleaf 片段替代 slot -->
+          <th:block th:replace="${content}"></th:block>
+          <div id="sidebar">
+            <div th:replace="~{layouts/macro/sidebar :: sidebar}"></div>
+          </div>
+          <div class="dimmer"></div>
+        </div>
+      </main>
+      
+      <footer id="footer">
+        <div class="inner">
+          <div class="widgets">
+            <div th:replace="~{layouts/macro/widgets :: widgets}"></div>
+          </div>
+          <div th:replace="~{layouts/partials/footer :: footer}"></div>
+        </div>
+      </footer>
+    </div>
+    
+    <!-- 脚本引用组件 -->
+    <div th:replace="~{layouts/partials/scripts :: scripts}"></div>
+  </body>
+</html>

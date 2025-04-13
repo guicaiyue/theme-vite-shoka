@@ -1,0 +1,41 @@
+<!-- 页脚组件 - 显示网站页脚信息 -->
+<div class="status" th:with="stats = ${siteStatsFinder.getStats()}, currentYear = ${#dates.format(#dates.createNow(), 'yyyy')}" th:fragment="footer">
+  <div class="copyright">
+    © 2020 –
+    <span itemprop="copyrightYear" th:text="${currentYear}">2024</span>
+    <span class="with-love">
+      <i class="ic i-sakura rotate"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">
+      <th:block th:text="${theme.config.base.blog_master+' @ '+site.title+' @ '}"></th:block>
+      <a th:if="${!#strings.isEmpty(theme.config.base.icp_number)}" href="https://beian.miit.gov.cn/#/Integrated/recordQuery" target="_blank" rel="noopener noreferrer" th:text="${theme.config.base.icp_number}"></a>
+    </span>
+  </div>
+  <div class="count">
+    <span class="post-meta-item-icon">
+      <i class="ic i-chart-area"></i>
+    </span>
+    <span title="浏览量" th:text="${'浏览 '+stats.visit}+' 次'"></span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="ic i-coffee"></i>
+    </span>
+    <span title="获赞量" th:text="${'获赞 '+stats.upvote}+' 次'"></span>
+  </div>
+  <div class="powered-by">
+    基于 <a
+      href="https://hexo.io"
+      rel="noopener external nofollow noreferrer"
+      target="_blank"
+      class="exturl"
+      title="Hexo">Hexo</a
+    > &amp; Theme.<a
+      href="https://github.com/amehime/hexo-theme-shoka"
+      rel="noopener external nofollow noreferrer"
+      target="_blank"
+      class="exturl"
+      title="Shoka">Shoka & </a
+    >魔改
+  </div>
+</div>
+<halo:footer />

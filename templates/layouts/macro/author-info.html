@@ -1,0 +1,35 @@
+<!-- 作者信息组件 - 显示作者的头像、姓名和社交媒体链接 -->
+<th:block th:fragment="info(author)">
+  <div class="author-info">
+    <!-- 作者头像 -->
+    <div class="author-avatar">
+      <img 
+        class="lazyload" 
+        data-src="${author.spec.avatar}" 
+        src="/assets/images/placeholder.svg" 
+        alt="${author.spec.displayName}" 
+        width="200" 
+        height="200"
+      />
+    </div>
+    
+    <!-- 作者名称 -->
+    <h2 class="author-name" th:text="${author.spec.displayName}"></h2>
+    
+    <!-- 作者简介 -->
+    <div class="author-description" th:if="${!#strings.isEmpty(author.spec.bio)}" th:text="${author.spec.bio}"></div>
+    
+    <!-- 社交媒体链接 -->
+    <div class="author-social" th:if="${!#lists.isEmpty(author.spec.socials)}">
+      <a th:each="social : ${author.spec.socials}" 
+         th:href="${social.url}" 
+         th:title="${social.name}"
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="social-link">
+        <i th:class="${'ic i-' + social.name}"></i>
+        <span class="sr-only" th:text="${social.name}">平台名称</span>
+      </a>
+    </div>
+  </div>
+</th:block>

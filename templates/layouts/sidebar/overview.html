@@ -1,0 +1,48 @@
+<th:block th:fragment="overview">
+  <div class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img decoding="async" class="image" itemprop="image" alt="{{ author }}"
+        th:data-src="${theme.config.base.blog_master_head_image}">
+    <p class="name" itemprop="name" th:text="${theme.config.base.blog_master}"></p>
+    <div class="description" itemprop="description" th:text="${theme.config.base.blog_description}"></div>
+  </div>
+
+  <nav class="state" th:with="stats = ${siteStatsFinder.getStats()}">
+      <div class="item posts">
+        <a href="/archives">
+          <span class="count" th:text="${stats.post}"></span>
+          <span class="name">归档</span>
+        </a>
+      </div>
+
+      <div class="item categories">
+        <a href="/categories">
+          <span class="count" th:text="${stats.category}"></span>
+          <span class="name">分类</span>
+        </a>
+      </div>
+
+      <div class="item tags">
+        <a href="/tags">
+          <span class="count" th:text="${tagFinder.list(1,1).total}"></span>
+          <span class="name">标签</span>
+        </a>
+      </div>
+  </nav>
+
+  <div class="social" th:if="${!#lists.isEmpty(theme.config.self.external)}">
+    <th:block th:each="external,index : ${theme.config.self.external}">
+      <a
+      th:href="${external.url}"
+      rel="noopener external nofollow noreferrer"
+      target="_blank"
+      th:class="${'exturl item '+external.name}"
+      th:title="${external.url}">
+        <i th:class="${'ic i-'+external.name}"></i>
+      </a>
+    </th:block>
+  </div>
+
+  <ul class="menu">
+    <div th:replace="~{layouts/sidebar/menu :: menu}"></div>
+  </ul>
+</th:block>

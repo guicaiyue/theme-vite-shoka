@@ -1,0 +1,18 @@
+<!-- 文章时间信息组件 - 显示文章的发布时间和更新时间 -->
+<th:block th:fragment="timeInfo(post)">
+  <span class="item" th:title="${#dates.format(post.spec.publishTime, 'yyyy-MM-dd HH:mm:ss')}">
+    <span class="icon">
+      <i class="ic i-calendar"></i>
+    </span>
+    <span class="text">发表于</span>
+    <time itemprop="datePublished" th:datetime="${post.spec.publishTime}" th:text="${#dates.format(post.spec.publishTime, 'yyyy-MM-dd')}"></time>
+  </span>
+  <br/>
+  <span class="item" th:title="${#dates.format(post.status.lastModifyTime, 'yyyy-MM-dd HH:mm:ss')}">
+    <span class="icon">
+      <i class="ic i-calendar-check"></i>
+    </span>
+    <span class="text">更新于</span>
+    <time itemprop="dateModified" th:datetime="${post.status.lastModifyTime}" th:text="${#dates.format(post.status.lastModifyTime, 'yyyy-MM-dd')}"></time>
+  </span>
+</th:block>

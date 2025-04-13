@@ -1,0 +1,19 @@
+<!-- 页面标题组件 - 用于分类和标签页面的标题显示 -->
+<th:block th:fragment="title(type, name)">
+  <h1 itemprop="name headline">
+    <!-- 全部分类/标签页面 -->
+    <th:block th:if="${#strings.isEmpty(name)}">
+      <th:block th:text="${'全部' + type}"></th:block>
+    </th:block>
+    
+    <!-- 特定分类/标签页面 -->
+    <th:block th:unless="${#strings.isEmpty(name)}">
+      <th:block th:if="${type == '分类'}">
+        <th:block th:text="${'分类于 ' + name + ' 的文章'}"></th:block>
+      </th:block>
+      <th:block th:if="${type == '标签'}">
+        <th:block th:text="${'包含标签 ' + name + ' 的文章'}"></th:block>
+      </th:block>
+    </th:block>
+  </h1>
+</th:block>

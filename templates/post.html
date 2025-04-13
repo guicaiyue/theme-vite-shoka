@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content})}">
-  <th:block th:fragment="content">
-    <article
-      class="prose !max-w-none p-4"
-      th:classappend="${theme.config.post.content_size} + ' ' + ${theme.config.post.content_theme}"
-    >
-      <h1 th:text="${post.spec.title}"></h1>
-      <th:block th:utext="${post.content.content}"> </th:block>
-    </article>
-  </th:block>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'postHtml')}">
+<div class="pjax" id="brandSlot">
+  <h1 itemprop="name headline" th:text="${post.spec.title}"></h1>
+  <div class="meta"
+    th:with="length=${#strings.length(post.content.raw)}, readingSpeed=${theme.config.post.readingSpeed ?: 600}">
+    <div>
+      <th:block th:replace="~{layouts/macro/post-time-info :: timeInfo(${post})}"></th:block>
+    </div>
+    <div class="mxleft">
+      <th:block th:replace="~{layouts/macro/post-stats :: stats(${post}, ${length}, ${readingSpeed})}"></th:block>
+    </div>
+  </div>
+</div>
+<div id="main" class="pjax">
+  <div class="article wrap">
+    <div class="breadcrumb" itemscope="" itemtype="https://schema.org/BreadcrumbList">
+      <i class="ic i-home"></i> <span><a href="/" data-pjax-state="">首页</a></span>
+      <th:block th:if="${!#lists.isEmpty(post.categories)}" th:with="cat_length = ${#lists.size(post.categories)}">
+        <i class="ic i-angle-right"></i>
+        <th:block th:each="categorie,iterStat : ${post.categories}">
+          <span th:class="${iterStat.index == (cat_length-1)} ? 'current'" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a th:href="${categorie.status.permalink}" itemprop="item" rel="index" th:title="${categorie.spec.displayName}"><span itemprop="name" th:text="${categorie.spec.displayName}"></span></a><meta itemprop="position" th:content="${iterStat.index+1}" /></span>
+          <th:block th:if="${cat_length > 0} and ${iterStat.index != (cat_length-1)}">
+            <i class="ic i-angle-right"></i>
+          </th:block>
+        </th:block>
+      </th:block>
+    </div>
+    <div th:replace="~{layouts/post/post :: postArticle}"></div>
+  </div>
+  <!-- 上下一篇 -->
+  <div th:replace="~{layouts/post/nav :: postNav}"></div>
+
+  <!-- 评论区 -->
+  <div style="margin-top: 20px;" th:if="${haloCommentEnabled}" class="halo-shoka-comment">
+    <halo:comment group="content.halo.run" th:kind="${'posts/'+post.metadata.name}"
+      th:attr="name=${post.metadata.name}" colorScheme="window.main.currentColorScheme" />
+  </div>
+</div>
+
 </html>

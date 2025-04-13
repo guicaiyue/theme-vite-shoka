@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'tagsHtml')}">
+  <div class="pjax" id="brandSlot">
+    <th:block th:replace="~{layouts/macro/page-title :: title('标签', '')}"></th:block>
+  </div>
+  <div id="main" class="pjax">
+    <div class="collapse wrap">
+      <th:block th:replace="~{layouts/macro/breadcrumb :: path('标签', '', ${#lists.size(tags)})}"></th:block>
+      
+      <div class="tag cloud">
+        <a 
+          th:each="tag : ${tags}" 
+          th:text="${tag.spec.displayName}" 
+          th:href="${tag.status.permalink}"
+          th:title="${'包含 ' + tag.status.visiblePostCount + ' 篇文章'}"
+          th:data-count="${tag.status.visiblePostCount}"
+          class="tag">
+        </a>
+      </div>
+      
+      <!-- 标签列表 -->
+      <div class="tag-list" th:if="${!#lists.isEmpty(tags)}">
+        <div class="tag-group" th:each="tag : ${tags}">
+          <div class="tag-item">
+            <a class="tag-link" th:href="${tag.status.permalink}">
+              <h3 class="tag-name" th:text="${tag.spec.displayName}"></h3>
+              <span class="tag-count" th:text="${tag.status.visiblePostCount + ' 篇文章'}"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

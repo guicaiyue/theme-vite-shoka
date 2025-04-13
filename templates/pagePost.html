@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'pagePostHtml')}">
+  <div class="pjax" id="brandSlot">
+    <h1 itemprop="name headline" th:text="${singlePage.spec.title}"></h1>
+  </div>
+  <div id="main" class="pjax" th:with="post = ${singlePage}">
+    <div class="page wrap">
+      <article itemscope itemtype="http://schema.org/Article" class="post block line-numbers" lang="zh-CN">
+        <link itemprop="mainEntityOfPage">
+      
+        <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <meta itemprop="image" content="${theme.config.base.avatar}">
+          <meta itemprop="name" content="${post.owner.displayName}">
+          <meta itemprop="description" content="${theme.config.base.blog_description}">
+        </span>
+
+        <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+          <meta itemprop="name" content="${site.title}">
+        </span>
+
+        <div class="body md" itemprop="articleBody">
+          <div th:utext="${post.content.content}"></div>
+        </div>
+
+        <footer class="post-footer">
+          <div class="copyright">
+            <p th:text="${theme.config.copyright}"></p>
+          </div>
+        </footer>
+      </article>
+    </div>
+    <!-- 评论区 -->
+    <div style="margin-top: 20px;" th:if="${haloCommentEnabled}" class="halo-shoka-comment">
+      <halo:comment
+          group="content.halo.run"
+          th:kind="${'singlepages/'+post.metadata.name}"
+          th:attr="name=${post.metadata.name}"
+          colorScheme="window.main.currentColorScheme"
+      />
+    </div>
+  </div>
+</html>

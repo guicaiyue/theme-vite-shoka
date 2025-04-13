@@ -1,0 +1,34 @@
+<!-- 归档导航组件 - 用于归档页面的年份和月份导航 -->
+<th:block th:fragment="nav(type, year, month)">
+  <h2 class="item header">
+    <!-- 月份导航 -->
+    <th:block th:if="${type == 'month'}">
+      <a th:href="@{/archives}">全部</a> 
+      <small>/</small> 
+      <a th:href="@{/archives/{year}(year=${year})}" th:text="${year+' 年'}"></a> 
+      <small>/</small>
+      <th:block th:text="${' '+month+' 月'}"></th:block>
+      <small>归档</small>
+    </th:block>
+    
+    <!-- 年份导航 -->
+    <th:block th:if="${type == 'year'}">
+      <a th:href="@{/archives}">全部</a>
+      <small>/</small>
+      <th:block th:text="${' '+year+' 年'}"></th:block>
+      <small>归档</small>
+    </th:block>
+    
+    <!-- 全部归档 -->
+    <th:block th:if="${type == 'all'}" th:with="message=' 继续努力。'">
+      <a th:href="@{/}">首页</a> <small>/</small>
+      <th:block th:text="${'目前共计 '+total+' 篇文章。'}"></th:block>
+      <small class="cheers" th:if="${total < 30}" th:text="${'嗯..'+message}"></small>
+      <small class="cheers" th:if="${total >= 30 && total < 50}" th:text="${'还行'+message}"></small>
+      <small class="cheers" th:if="${total >= 50 && total < 80}" th:text="${'不错'+message}"></small>
+      <small class="cheers" th:if="${total >= 80 && total < 130}" th:text="${'很好'+message}"></small>
+      <small class="cheers" th:if="${total >= 130 && total < 210}" th:text="${'非常好'+message}"></small>
+      <small class="cheers" th:if="${total > 210}" th:text="${'太棒了'+message}"></small>
+    </th:block>
+  </h2>
+</th:block>

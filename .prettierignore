@@ -1,0 +1,6 @@
+templates/**/*.html
+dist
+node_modules
+.git
+.husky
+.vscode 

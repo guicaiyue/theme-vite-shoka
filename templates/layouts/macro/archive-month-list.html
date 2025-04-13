@@ -1,0 +1,11 @@
+<!-- 归档月份列表组件 - 显示特定年份的月份归档列表 -->
+<th:block th:fragment="monthList(year)">
+  <th:block th:each="month : ${year.months}">
+    <h3 class="item section">
+      <a th:href="@{/archives/{yearVal}(yearVal=${year.year})}" th:text="${year.year+' 年'}"></a>
+      <small>/</small>
+      <a th:href="@{/archives/{yearVal}/{monthVal}(yearVal=${year.year}, monthVal=${month.month})}" th:text="${month.month+' 月'}"></a>
+      <small th:text="${'( '+#lists.size(month.posts)+' )'}"></small>
+    </h3>
+  </th:block>
+</th:block>

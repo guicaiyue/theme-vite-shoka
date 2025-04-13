@@ -1,0 +1,35 @@
+<!-- 统计分析组件 - 集成各种第三方统计和分析服务 -->
+<th:block th:fragment="analytics">
+  <!-- 百度统计 -->
+  <th:block th:if="${theme.config.analytics != null && !#strings.isEmpty(theme.config.analytics.baidu_analytics)}">
+    <script data-pjax async>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?" + /*[[${theme.config.analytics.baidu_analytics}]]*/ "";
+        hm.async = true;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+  </th:block>
+
+  <!-- Google Analytics -->
+  <th:block th:if="${theme.config.analytics != null && !#strings.isEmpty(theme.config.analytics.google_analytics)}">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=/*[[${theme.config.analytics.google_analytics}]]*/ ''"></script>
+    <script data-pjax>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', /*[[${theme.config.analytics.google_analytics}]]*/ '');
+    </script>
+  </th:block>
+
+  <!-- CNZZ 统计 -->
+  <th:block th:if="${theme.config.analytics != null && !#strings.isEmpty(theme.config.analytics.cnzz_analytics)}">
+    <script data-pjax async>
+      var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+      document.write(unescape("%3Cspan style='display:none;' id='cnzz_stat_icon_" + /*[[${theme.config.analytics.cnzz_analytics}]]*/ "" + "'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D" + /*[[${theme.config.analytics.cnzz_analytics}]]*/ "" + "%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+  </th:block>
+</th:block>

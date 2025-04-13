@@ -1,0 +1,19 @@
+<!-- 文章导航项组件 - 显示上一篇或下一篇文章的链接 -->
+<th:block th:fragment="item(post, type, direction)">
+  <div th:class="${'item ' + direction}" 
+       th:with="imgUrl = ${#strings.isEmpty(post.spec.cover) ? theme.config.base.postCoverUrl : post.spec.cover}">
+    <a th:href="@{${post.status.permalink}}" 
+       th:title="${post.spec.title}"
+       th:attr="rel=${direction == 'left' ? 'prev' : 'next'},
+                data-background-image=${imgUrl},
+                aria-label=${type + ': ' + post.spec.title}"
+       data-pjax>
+      <span class="type" th:text="${type}"></span>
+      <span class="category" th:if="${!#lists.isEmpty(post.categories)}">
+        <i class="ic i-flag"></i>
+        <th:block th:text="${post.categories[0].spec.displayName}"></th:block>
+      </span>
+      <h3 th:text="${post.spec.title}"></h3>
+    </a>
+  </div>
+</th:block>

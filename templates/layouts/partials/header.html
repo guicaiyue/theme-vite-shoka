@@ -1,0 +1,24 @@
+<!-- 网站头部导航组件 - 包含网站导航菜单和功能按钮 -->
+<nav id="nav">
+  <div class="inner">
+    <div class="toggle">
+      <div class="lines" aria-label="切换导航栏">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
+    </div>
+    <ul class="menu">
+      <li class="item title"><a href="/" rel="start" th:text="${site.title}"></a></li>
+      <div th:replace="~{layouts/sidebar/menu :: menu}"></div>
+    </ul>
+    <ul class="right">
+      <li class="item theme">
+        <i class="ic i-sun"></i>
+      </li>
+      <li class="item search" th:if="${pluginFinder.available('PluginSearchWidget')}">
+        <a href="javascript:SearchWidget.open()"><i class="ic i-search"></i></a>
+      </li>
+    </ul>
+  </div>
+</nav>

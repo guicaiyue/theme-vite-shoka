@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'archivesHtml')}">
+  <div class="pjax" id="brandSlot">
+    <th:block th:with="pathParts = ${#strings.listSplit(archives.prevUrl,'/')}">
+      <h1 itemprop="name headline" th:if="${#lists.size(pathParts) == 1}">归档</h1>
+      <h1 itemprop="name headline" th:if="${#lists.size(pathParts) == 2}" th:text="${'发表于 '+pathParts[1]+'年 的文章'}"></h1>
+      <h1 itemprop="name headline" th:if="${#lists.size(pathParts) == 3}" th:text="${'发表于 '+pathParts[1]+'年'+pathParts[2]+'月 的文章'}"></h1>
+    </th:block>
+  </div>
+  <div id="main" class="pjax">
+    <div class="collapse wrap" th:with="pathParts = ${#strings.listSplit(archives.prevUrl,'/')}">
+      <!-- 导航部分 -->
+      <th:block th:if="${#lists.size(pathParts) == 3}">
+        <th:block th:replace="~{layouts/macro/archive-nav :: nav('month', ${pathParts[1]}, ${pathParts[2]})}"></th:block>
+      </th:block>
+      
+      <th:block th:if="${#lists.size(pathParts) == 2}">
+        <th:block th:replace="~{layouts/macro/archive-nav :: nav('year', ${pathParts[1]}, '')}"></th:block>
+      </th:block>
+      
+      <th:block th:if="${#lists.size(pathParts) == 1}">
+        <th:block th:replace="~{layouts/macro/archive-nav :: nav('all', '', '', ${archives.total})}"></th:block>
+      </th:block>
+      
+      <!-- 年份列表 -->
+      <th:block th:if="${#lists.size(pathParts) == 1 && !#lists.isEmpty(archives.items)}">
+        <th:block th:each="year : ${archives.items}">
+          <th:block th:replace="~{layouts/macro/archive-month-list :: monthList(${year})}"></th:block>
+        </th:block>
+      </th:block>
+      
+      <!-- 月份文章列表 -->
+      <th:block th:if="${#lists.size(pathParts) == 2 && !#lists.isEmpty(archives.items)}">
+        <th:block th:with="year = ${archives.items[0]}">
+          <th:block th:each="month : ${year.months}">
+            <h3 class="item section">
+              <a th:href="@{/archives/{yearVal}/{monthVal}(yearVal=${year.year}, monthVal=${month.month})}" th:text="${month.month+' 月'}"></a>
+            </h3>
+            
+            <th:block th:each="post : ${month.posts}">
+              <th:block th:replace="~{layouts/macro/archive-post-item :: item(${post})}"></th:block>
+            </th:block>
+          </th:block>
+        </th:block>
+      </th:block>
+      
+      <!-- 具体月份的文章列表 -->
+      <th:block th:if="${#lists.size(pathParts) == 3 && !#lists.isEmpty(archives.items)}">
+        <th:block th:if="${!#lists.isEmpty(archives.items[0].months)}">
+          <th:block th:each="post : ${archives.items[0].months[0].posts}">
+            <th:block th:replace="~{layouts/macro/archive-post-item :: item(${post})}"></th:block>
+          </th:block>
+        </th:block>
+      </th:block>
+    </div>
+  </div>
+</html>

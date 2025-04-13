@@ -1,0 +1,12 @@
+<!-- 文章导航组件 - 显示上一篇和下一篇文章的链接 -->
+<div th:fragment="postNav" class="post-nav" th:with="postCursor = ${postFinder.cursor(post.metadata.name)}">
+  <!-- 上一篇文章 -->
+  <th:block th:if="${postCursor.hasPrevious()}" 
+            th:replace="~{layouts/post/post-nav-item :: item(${postCursor.previous}, '上一篇', 'left')}">
+  </th:block>
+  
+  <!-- 下一篇文章 -->
+  <th:block th:if="${postCursor.hasNext()}" 
+            th:replace="~{layouts/post/post-nav-item :: item(${postCursor.next}, '下一篇', 'right')}">
+  </th:block>
+</div>

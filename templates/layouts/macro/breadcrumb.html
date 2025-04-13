@@ -1,0 +1,56 @@
+<!-- 通用面包屑导航组件 -->
+<th:block th:fragment="common(items)">
+  <div class="breadcrumb" itemscope="itemscope" itemtype="https://schema.org/BreadcrumbList">
+    <i class="ic i-home"></i>
+    <span>
+      <a href="/" itemprop="item" data-pjax>
+        <span itemprop="name">首页</span>
+      </a>
+    </span>
+    <th:block th:each="item, stat : ${items}">
+      <i class="ic i-angle-right"></i>
+      <span th:if="${!item.link}">
+        <span itemprop="name" th:text="${item.text}"></span>
+      </span>
+      <span th:if="${item.link}">
+        <a th:href="${item.link}" itemprop="item" data-pjax>
+          <span itemprop="name" th:text="${item.text}"></span>
+        </a>
+      </span>
+    </th:block>
+  </div>
+</th:block>
+
+<!-- 文章页面包屑 -->
+<th:block th:fragment="post(post)">
+  <th:block th:with="items = ${new java.util.ArrayList()}">
+    <th:block th:with="
+      category = ${!#lists.isEmpty(post.categories) ? post.categories[0] : null},
+      _ = ${category != null ? items.add({'text': category.spec.displayName, 'link': category.status.permalink}) : null},
+      _ = ${items.add({'text': post.spec.title, 'link': null})}">
+      <th:block th:replace="~{::common(${items})}"></th:block>
+    </th:block>
+  </th:block>
+</th:block>
+
+<!-- 分类页面包屑 -->
+<th:block th:fragment="category(category, count)">
+  <th:block th:with="items = ${new java.util.ArrayList()}">
+    <th:block th:with="
+      _ = ${items.add({'text': '分类', 'link': '/categories'})},
+      _ = ${items.add({'text': category.spec.displayName + ' (' + count + ')', 'link': null})}">
+      <th:block th:replace="~{::common(${items})}"></th:block>
+    </th:block>
+  </th:block>
+</th:block>
+
+<!-- 标签页面包屑 -->
+<th:block th:fragment="tag(tag, count)">
+  <th:block th:with="items = ${new java.util.ArrayList()}">
+    <th:block th:with="
+      _ = ${items.add({'text': '标签', 'link': '/tags'})},
+      _ = ${items.add({'text': tag.spec.displayName + ' (' + count + ')', 'link': null})}">
+      <th:block th:replace="~{::common(${items})}"></th:block>
+    </th:block>
+  </th:block>
+</th:block>

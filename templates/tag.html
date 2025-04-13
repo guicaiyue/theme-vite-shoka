@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/partials/layout :: layout(~{::#brandSlot}, ~{::#main}, 'tagHtml')}">
+  <div class="pjax" id="brandSlot">
+    <th:block th:replace="~{layouts/macro/page-title :: title('标签', ${tag.spec.displayName})}"></th:block>
+  </div>
+  <div id="main" class="pjax">
+    <div class="collapse wrap">
+      <th:block th:replace="~{layouts/macro/breadcrumb :: path('标签', ${tag.spec.displayName}, '')}"></th:block>
+      
+      <th:block th:if="${!#lists.isEmpty(posts.items)}">
+        <th:block th:each="post : ${posts.items}">
+          <th:block th:replace="~{layouts/macro/archive-post-item :: item(${post})}"></th:block>
+        </th:block>
+        
+        <!-- 分页 -->
+        <div class="pagination" th:if="${posts.hasPrevious() || posts.hasNext()}">
+          <a class="page-btn" th:if="${posts.hasPrevious()}" th:href="${posts.prevUrl}" rel="prev">
+            <i class="ic i-angle-left"></i>
+            <span>上一页</span>
+          </a>
+          <a class="page-btn" th:if="${posts.hasNext()}" th:href="${posts.nextUrl}" rel="next">
+            <span>下一页</span>
+            <i class="ic i-angle-right"></i>
+          </a>
+        </div>
+      </th:block>
+      
+      <div class="empty-message" th:if="${#lists.isEmpty(posts.items)}">
+        <p>该标签下暂无文章</p>
+      </div>
+    </div>
+  </div>
+</html>

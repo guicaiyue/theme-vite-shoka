@@ -1,0 +1,73 @@
+<article th:each="post,index : ${dataList}" class="item show">
+  <div class="cover">
+    <a th:title="${post.spec.title}" th:href="${post.status.permalink}" th:with="imgUrl = ${theme.config.base.postCoverUrl}">
+        <img decoding="async" th:if="${#strings.isEmpty(post.spec.cover)}" th:data-src="${imgUrl+'&'+post.metadata.name}"/>
+        <img decoding="async" th:if="${!#strings.isEmpty(post.spec.cover)}" th:data-src="${post.spec.cover}"/>
+      </a
+    >
+  </div>
+  <div class="info">
+    <div class="meta">
+      <span class="item" title="发表时间">
+        <span class="icon">
+          <i class="ic i-calendar"></i>
+        </span>
+        <time
+          itemprop="dateCreated datePublished"
+          th:datetime="${post.metadata.creationTimestamp}"
+        >
+          <th:block
+            th:text="${#dates.format(post.spec.publishTime, 'yyyy-MM-dd')}"
+          ></th:block>
+        </time>
+      </span>
+      <span class="item" title="访问">
+        <span class="icon">
+          <i class="ic i-eye"></i>
+        </span>
+        <span th:text="${post.stats.visit}"></span>
+      </span>
+      <span class="item" title="点赞">
+        <span class="icon">
+          <i class="ic i-dianzan2"></i>
+        </span>
+        <span th:text="${post.stats.upvote}"></span>
+      </span>
+      <span class="item" title="评论">
+        <span class="icon">
+          <i class="ic i-comments"></i>
+        </span>
+        <span th:text="${post.stats.comment}"></span>
+      </span>
+      <span class="item" title="热度">
+        <span class="icon">
+          <i class="ic i-clock"></i>
+        </span>
+        <span
+          th:with="heat= ${24+post.stats.visit*0.1+post.stats.upvote*2+post.stats.comment*3}, heatColor= '#'+${(heat < 37)? 'ffa87e' : (heat < 120)? 'fb734a' : 'e0081c'}"
+          th:style="'color: ' + ${heatColor}"
+        >
+          <th:block th:text="${#numbers.formatDecimal(heat,1,2)}"></th:block>℃
+        </span>
+      </span>
+    </div>
+
+    <h3>
+      <a
+        th:text="${post.spec.title}"
+        th:href="${post.status.permalink}"></a>
+    </h3>
+    <div class="excerpt" th:text="${post.status.excerpt}"></div>
+    <div class="meta footer">
+      <span>
+        <a
+          th:if="${not #lists.isEmpty(post.categories)}"
+          th:href="${post.categories[0].status.permalink}"
+          ><i class="ic i-flag"></i>
+          <th:block th:text="${post.categories[0].spec.displayName}"></th:block>
+        </a>
+      </span>
+    </div>
+    <a th:title="${post.spec.title}" th:href="${post.status.permalink}" class="btn">详情</a>
+  </div>
+</article>

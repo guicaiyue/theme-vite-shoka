@@ -1,0 +1,26 @@
+<!-- 头部脚本组件 - 定义全局JavaScript变量和配置 -->
+<script type="text/javascript" th:fragment="scripts" data-th-inline="javascript">
+  // 主题配置
+  var haloConfig = /*[[${theme.config}]]*/ {};
+  // 站点配置
+  var site = /*[[${site}]]*/ {};
+
+  // 确保配置对象存在
+  if (typeof haloConfig === 'string') {
+    try {
+      haloConfig = JSON.parse(haloConfig);
+    } catch (e) {
+      console.error('Failed to parse haloConfig:', e);
+      haloConfig = {};
+    }
+  }
+  
+  if (typeof site === 'string') {
+    try {
+      site = JSON.parse(site);
+    } catch (e) {
+      console.error('Failed to parse site:', e);
+      site = {};
+    }
+  }
+</script>

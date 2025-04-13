@@ -1,39 +1,212 @@
 apiVersion: v1alpha1
 kind: Setting
 metadata:
-  name: theme-modern-starter-setting
+  name: theme-shoka-setting
 spec:
   forms:
-    - group: post
-      label: 文章
+    - group: base
+      label: 基础
       formSchema:
-        - $formkit: select
-          name: content_size
-          label: 字体大小
-          value: prose-base
+        - $formkit: text
+          name: blog_name
+          label: 博客标题
+          value: ""
+        - $formkit: text
+          name: blog_master
+          label: 博客主人
+          value: ""
+        - $formkit: attachment
+          name: blog_master_head_image
+          label: 主人头像
+          accepts:
+            - "image/png"
+            - "image/gif"
+            - "image/webp"
+            - "image/jpg"
+            - "image/jpeg"
+          value: ""
+        - $formkit: text
+          name: blog_description
+          label: 博客介绍
+          value: "生命中的每一刻，都是时间的走廊，走向未知的远方"
+        - $formkit: url
+          name: headCoverUrl
+          label: 头部轮播图随机图片API
+          value: "https://tuapi.eees.cc/api.php?type=302&px=pc&category=biying"
+          validation: "url"
+        - $formkit: url
+          name: postCoverUrl
+          label: 文章随机图片API
+          value: "https://tuapi.eees.cc/api.php?type=302&px=pc&category=dongman"
+          validation: "url"
+        - $formkit: text
+          name: icp_number
+          label: ICP备案号
+          value: ""
+        - $formkit: text
+          name: security_number
+          label: 公安备案号
+          value: ""
+    - group: layout
+      label: 主题动画
+      formSchema:
+        - $formkit: radio
+          value: "关闭"
           options:
-            - value: prose-base
-              label: prose-base
-            - value: prose-sm
-              label: prose-sm
-            - value: prose-lg
-              label: prose-lg
-            - value: prose-xl
-              label: prose-xl
-            - value: prose-2xl
-              label: prose-2xl
+            - "开启"
+            - "关闭"
+          name: loader_start
+          label: 初入页面过度动画
+    - group: seo
+      label: SEO
+      formSchema:
+        - $formkit: attachment
+          name: ogImage
+          label: Open Graph 默认图片标签
+          accepts:
+            - "image/png"
+            - "video/mp4"
+            - "audio/*"
+          value: "https://gcore.jsdelivr.net/gh/guicaiyue/FigureBed@master/%E4%BA%8C%E6%AC%A1%E5%85%83/20231225000248474.jpg"
+    - group: self
+      label: 个人
+      formSchema:
+        - $formkit: repeater
+          name: external
+          label: 社交信息
+          value: []
+          max: 6
+          min: 0
+          children:
+            - $formkit: text
+              name: name
+              label: 站点名
+              value: ""
+            - $formkit: text
+              name: url
+              label: 站点网址
+              value: ""
+    - group: html
+      label: 扩展代码
+      formSchema:
+        - $formkit: textarea
+          name: head
+          label: 扩展head标签html片段
+          value: ""
+          placeholder: 请输入正确的html片段代码，不含 js
+          rows: 10
+        - $formkit: textarea
+          name: headJs
+          label: 扩展head标签js脚本
+          value: ""
+          rows: 10
+          placeholder: 不要用 <script> 标签包裹，请直接写 JS 脚本
+    - group: analytics
+      label: 统计分析
+      formSchema:
+        - $formkit: text
+          name: baidu_analytics
+          label: 百度统计
+          placeholder: 百度统计的站点 ID
+          value: ""
+        - $formkit: text
+          name: google_analytics
+          label: Google Analytics
+          placeholder: Google Analytics 的跟踪 ID
+          value: ""
+        - $formkit: text
+          name: cnzz_analytics
+          label: CNZZ 统计
+          placeholder: CNZZ 统计的站点 ID
+          value: ""
+    - group: post
+      label: 文章设置
+      formSchema:
+        - $formkit: number
+          name: readingSpeed
+          label: 阅读速度
+          description: 每分钟阅读字数，用于计算文章阅读时间
+          value: 600
         - $formkit: select
-          name: content_theme
-          label: 颜色主题
-          value: prose-gray
+          name: enable_reward
+          id: enable_reward
+          label: 开启打赏
           options:
-            - value: prose-gray
-              label: prose-gray
-            - value: prose-slate
-              label: prose-slate
-            - value: prose-zinc
-              label: prose-zinc
-            - value: prose-neutral
-              label: prose-neutral
-            - value: prose-stone
-              label: prose-stone
+            - label: 是
+              value: true
+            - label: 否
+              value: false
+          value: false
+        - $formkit: repeater
+          name: reward_methods
+          label: 打赏方式
+          if: "$value.enable_reward === true"
+          value: []
+          max: 3
+          min: 0
+          children:
+            - $formkit: select
+              name: type
+              label: 支付方式
+              options:
+                - label: 微信支付
+                  value: wechat
+                - label: 支付宝
+                  value: alipay
+                - label: PayPal
+                  value: paypal
+            - $formkit: attachment
+              if: "$value.type !== 'paypal'"
+              name: qrcode
+              label: 收款二维码
+              accepts:
+                - "image/png"
+                - "image/jpg"
+                - "image/jpeg"
+                - "image/gif"
+                - "image/webp"
+            - $formkit: url
+              if: "$value.type === 'paypal'"
+              name: paypal_link
+              label: PayPal 链接
+              validation: "url"
+              placeholder: "请输入您的 PayPal.me 链接"
+    - group: author
+      label: 作者设置
+      formSchema:
+        - $formkit: repeater
+          name: socials
+          label: 社交媒体
+          value: []
+          max: 6
+          min: 1
+          children:
+            - $formkit: select
+              name: name
+              label: 平台
+              options:
+                - label: GitHub
+                  value: github
+                - label: Twitter
+                  value: twitter
+                - label: Facebook
+                  value: facebook
+                - label: Instagram
+                  value: instagram
+                - label: LinkedIn
+                  value: linkedin
+                - label: 微博
+                  value: weibo
+                - label: 知乎
+                  value: zhihu
+                - label: 哔哩哔哩
+                  value: bilibili
+                - label: YouTube
+                  value: youtube
+                - label: Email
+                  value: email
+            - $formkit: text
+              name: url
+              label: 链接
+              validation: "url"
+              placeholder: "请输入完整的URL地址"

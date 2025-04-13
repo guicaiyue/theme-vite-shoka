@@ -1,0 +1,21 @@
+<!-- 侧边栏菜单组件 - 显示网站导航菜单 -->
+<th:block class="menu" th:with="menuItems = ${menuFinder.getPrimary().menuItems}" th:fragment="menu">
+  <li th:class="${#lists.size(menuItem.children) == 0?'item':'item dropdown'}" th:each="menuItem : ${menuItems}">
+    <a
+      href="javascript:void(0);"
+      th:if="${menuItem.status.href == '_'}"
+    ><i th:class="${#annotations.get(menuItem, 'icon')}"></i><th:block th:text="${menuItem.status.displayName}"></th:block>
+    </a>
+    <a
+      th:if="${menuItem.status.href != '_'}"
+      th:href="@{${menuItem.status.href}}"
+      th:target="${menuItem.spec.target?.value}"
+    ><i th:class="${#annotations.get(menuItem, 'icon')}"></i><th:block th:text="${menuItem.status.displayName}"></th:block>
+    </a>
+    <ul class="submenu" th:if="${!#lists.isEmpty(menuItem.children)}">
+      <li class="item" th:each="menuItem : ${menuItem.children}">
+        <a th:href="@{${menuItem.status.href}}" th:target="${menuItem.spec.target?.value}" rel="section" ><i th:class="${#annotations.get(menuItem, 'icon')}" ></i><th:block th:text="${menuItem.status.displayName}"></th:block></a>
+      </li>
+    </ul>
+  </li>
+</th:block>
